@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Clima {
+  ARIDO
+  ENSOLARADO
+  NUBLADO
+  CHUVOSO
+  TROPICAL
+  GELIDO
+  TEMPERADO
+  VENTOSO
+  UMIDO
+  ARTICO
+  SECO
+  VOLCANICO
+  DESERTICO
+  PANTANOSO
+  TOXICO
+}
+
+
+enum Terreno {
+  DESERTO
+  FLORESTA
+  MONTANHOSO
+  PLANICIE
+  PANTANO
+  VULCANICO
+  ARIDO
+  GELIDO
+  OCEANICO
+  CAVERNOSO
+  SELVAGEM
+  URBANO
+  PEDREGOSO
+  POLO_GELIDO
+}
+
+enum Afiliacao {
+  JEDI
+  SITH
+  REBELDE
+  IMPERIO
+  NOVA_REPUBLICA
+  PRIMEIRA_ORDEM
+  RESISTENCIA
+  CACADOR_DE_RECOMPENSAS
+  COMERCIO
+  ALDEAO
+}
+
+
+model Planetas {
+  id  Int @default(autoincrement()) @id
+  nome String  @unique
+  clima Clima
+  terreno Terreno
+  populacao Int
+  personagens Personagens[]
+  sistemaEstelar SistemasEstelares  @relation(fields: [sistemaEstelarId], references: [id])
+  sistemaEstelarId Int
+}
+
+model SistemasEstelares {
+  id  Int @default(autoincrement()) @id
+  nome String  @unique
+  descricao String
+  planetas Planetas[]
+}
+
+model Personagens {
+  id  Int @default(autoincrement()) @id
+  raca String
+  afiliacao  Afiliacao
+  planeta Planetas  @relation(fields: [planetaId], references: [id])
+  planetaId Int
+}
+
+model NavesEspaciais {
+  id  Int @default(autoincrement()) @id
+  nome String @unique
+  modelo String
+  fabricante String
+  capacidade Int
+}
+
+model Usuarios {
+  id  Int @default(autoincrement()) @id
+  afiliacao  Afiliacao
+  email String @unique
+  senha String  @db.VarChar(100)
+}
