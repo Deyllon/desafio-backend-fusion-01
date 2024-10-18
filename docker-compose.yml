@@ -8,3 +8,25 @@ services:
       - "5436:5432"
     environment:
       POSTGRES_PASSWORD: ${SENHA}
+    networks:
+      - my-net
+
+  api:
+    build: 
+      context: ./
+      dockerfile: dockerfile 
+    restart: always
+    networks:
+      - my-net
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWTCONSTANTS: ${JWTCONSTANTS}
+      
+    depends_on:
+      - db
+    ports:
+      - 3004:3000
+networks:
+  my-net:
+    driver: bridge
+  
