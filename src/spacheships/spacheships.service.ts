@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from 'src/prisma.service';
 import { CreateSpacheshipType } from './dto/create-spacheship.dto';
@@ -38,16 +38,22 @@ export class SpacheshipsService {
     }
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     try {
-      return this.prisma.navesEspaciais.findUnique({
+       const spaceShip = await this.prisma.navesEspaciais.findUnique({
         where:{
           id
         }
       })
+
+      if(!spaceShip){
+        throw new NotFoundException("Nave espacial não encontrada")
+      }
+
+      return spaceShip
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof NotFoundException) {
+        throw error
       }
       throw new Error(error)
     }

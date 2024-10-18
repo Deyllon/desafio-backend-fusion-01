@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStarSystemType } from './dto/create-star-system.dto'; 
 import { UpdateStarSystemType } from './dto/update-star-system.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -41,14 +41,20 @@ export class StarSystemsService {
     
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     try {
-      return this.prisma.sistemasEstelares.findUnique({where: {
+      const starSystem = await this.prisma.sistemasEstelares.findUnique({where: {
         id
       }})
+
+      if(!starSystem){
+        throw new NotFoundException("Sistema estelar não encontrado")
+      }
+
+      return starSystem
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
+      if (error instanceof NotFoundException) {
+        throw error
       } else {
         throw new Error(error);
       }

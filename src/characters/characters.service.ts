@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCharacterType } from './dto/create-character.dto';
 import { UpdateCharacterType } from './dto/update-character.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -16,7 +16,9 @@ export class CharactersService {
           nome: createCharacterDto.nome,
           afiliacao: createCharacterDto.afiliacao,
           raca: createCharacterDto.raca,
-          planetaId: createCharacterDto.planetaId
+          planeta:{
+            connect: {id: createCharacterDto.planetaId}
+          }
         }
       })
     } catch (error) {
@@ -29,7 +31,21 @@ export class CharactersService {
 
   findAll() {
     try {
-      return this.prisma.personagens.findMany()
+      return this.prisma.personagens.findMany({
+        select:{
+          id: true,
+          nome: true,
+          raca: true,
+          afiliacao: true,
+          planetaId: false,
+          planeta:{
+            select:{
+              id: true,
+              nome: true
+            }
+          }
+        }
+      })
     } catch (error) {
       if(error instanceof Error) {
         throw new Error(error.message)
@@ -38,16 +54,35 @@ export class CharactersService {
     }
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     try {
-      return this.prisma.personagens.findUnique({
+      const character = await this.prisma.personagens.findUnique({
+        select:{
+          id: true,
+          nome: true,
+          raca: true,
+          afiliacao: true,
+          planetaId: false,
+          planeta:{
+            select:{
+              id: true,
+              nome: true
+            }
+          }
+        },
         where:{
           id
         }
       })
+
+      if(!character){
+        throw new NotFoundException("personagem não encontrado")
+      }
+
+      return character
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof NotFoundException) {
+        throw error
       }
       throw new Error(error)
     }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePlanetType } from './dto/create-planet.dto';
 
 import { PrismaService } from 'src/prisma.service'; 
@@ -30,7 +30,22 @@ export class PlanetsService {
 
   findAll() {
     try {
-      return this.prisma.planetas.findMany()
+      return this.prisma.planetas.findMany({
+        select:{
+          id: true,
+          nome: true,
+          sistemaEstelarId: false,
+          sistemaEstelar: {
+            select:{
+              id: true,
+              nome: true
+            }
+          },
+          clima: true,
+          terreno: true,
+          populacao: true
+        }
+      })
     } catch (error) {
       if(error instanceof Error) {
         throw new Error(error.message)
@@ -40,14 +55,36 @@ export class PlanetsService {
    
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     try {
-      return this.prisma.planetas.findUnique({where: {
-        id
-      }})
+      const planets = await this.prisma.planetas.findUnique({
+        select:{
+          id: true,
+          nome: true,
+          sistemaEstelarId: false,
+          sistemaEstelar: {
+            select:{
+              id: true,
+              nome: true
+            }
+          },
+          clima: true,
+          terreno: true,
+          populacao: true
+        },
+        where: {
+          id
+        }
+      })
+
+      if(!planets){
+        throw new NotFoundException("planeta não encontrado")
+      }
+
+      return planets
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof NotFoundException) {
+        throw error
       }
       throw new Error(error)
     }
