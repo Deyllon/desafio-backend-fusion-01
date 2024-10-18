@@ -2,12 +2,31 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { StarSystemsService } from './star-systems.service';
 import { CreateStarSystemType } from './dto/create-star-system.dto'; 
 import { UpdateStarSystemType } from './dto/update-star-system.dto'; 
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('star-systems')
 @Controller('star-systems')
 export class StarSystemsController {
   constructor(private readonly starSystemsService: StarSystemsService) {}
 
   @Post()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        nome: {
+          type: 'string',
+          example: "testeNome"
+        },
+        descricao: {
+          type: 'string',
+          example: "testeDescricao"
+        },
+      },
+      required: [ 'nome', 'descricao' ],
+    },
+  })
   create(@Body() createStarSystemDto: CreateStarSystemType) {
     return this.starSystemsService.create(createStarSystemDto);
   }
@@ -23,6 +42,17 @@ export class StarSystemsController {
   }
 
   @Patch(':id')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        descricao: {
+          type: 'string',
+          example: "novaDescricao"
+        },
+      }
+    },
+  })
   update(@Param('id') id: string, @Body() updateStarSystemDto: UpdateStarSystemType) {
     return this.starSystemsService.update(+id, updateStarSystemDto);
   }
