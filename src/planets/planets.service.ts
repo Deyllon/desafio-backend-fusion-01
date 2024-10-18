@@ -9,37 +9,77 @@ export class PlanetsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createPlanetDto: CreatePlanetType) {
-    return this.prisma.planetas.create({data: {
-      nome: createPlanetDto.nome,
-      clima: createPlanetDto.clima,
-      terreno: createPlanetDto.terreno,
-      populacao: createPlanetDto.populacao,
-      sistemaEstelar: {
-        connect: {id: createPlanetDto.sistemaEstelarId}
+    try {
+      return this.prisma.planetas.create({data: {
+        nome: createPlanetDto.nome,
+        clima: createPlanetDto.clima,
+        terreno: createPlanetDto.terreno,
+        populacao: createPlanetDto.populacao,
+        sistemaEstelar: {
+          connect: {id: createPlanetDto.sistemaEstelarId}
+        }
+      }})
+    } catch (error) {
+      if(error instanceof Error) {
+        throw new Error(error.message)
       }
-    }})
+      throw new Error(error)
+    }
+   
   }
 
   findAll() {
-    return this.prisma.planetas.findMany()
+    try {
+      return this.prisma.planetas.findMany()
+    } catch (error) {
+      if(error instanceof Error) {
+        throw new Error(error.message)
+      }
+      throw new Error(error)
+    }
+   
   }
 
   findOne(id: number) {
-    return this.prisma.planetas.findUnique({where: {
-      id
-    }})
+    try {
+      return this.prisma.planetas.findUnique({where: {
+        id
+      }})
+    } catch (error) {
+      if(error instanceof Error) {
+        throw new Error(error.message)
+      }
+      throw new Error(error)
+    }
+    
   }
 
   update(id: number, updatePlanetDto: UpdatePlanetType) {
-    return this.prisma.planetas.update({
-      data: updatePlanetDto,
-      where: {
-        id
+    try {
+      return this.prisma.planetas.update({
+        data: updatePlanetDto,
+        where: {
+          id
+        }
+      })
+    } catch (error) {
+      if(error instanceof Error) {
+        throw new Error(error.message)
       }
-    })
+      throw new Error(error)
+    }
+   
   }
 
   remove(id: number) {
-    return this.prisma.planetas.delete({where: {id}})
+    try {
+      return this.prisma.planetas.delete({where: {id}})
+    } catch (error) {
+      if(error instanceof Error) {
+        throw new Error(error.message)
+      }
+      throw new Error(error)
+    }
+    
   }
 } 

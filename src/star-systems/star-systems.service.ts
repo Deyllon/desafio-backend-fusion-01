@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateStarSystemType } from './dto/create-star-system.dto'; 
 import { UpdateStarSystemType } from './dto/update-star-system.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -18,38 +18,74 @@ export class StarSystemsService {
           descricao: createStarSystemDto.descricao
         }
       })
-    } catch (error : unknown) {
+    } catch (error) {
       if (error instanceof Error) {
-        throw new BadRequestException(error.message);
+        throw new Error(error.message);
       } else {
-        throw new InternalServerErrorException('An unknown error occurred');
+        throw new Error(error);
       }
     }
    
   }
 
   findAll() {
-    return this.prisma.sistemasEstelares.findMany()
+    try {
+      return this.prisma.sistemasEstelares.findMany()
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error(error);
+      }
+    }
+    
   }
 
   findOne(id: number) {
-    return this.prisma.sistemasEstelares.findUnique({where: {
-      id
-    }})
+    try {
+      return this.prisma.sistemasEstelares.findUnique({where: {
+        id
+      }})
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error(error);
+      }
+    }
+    
   }
 
   update(id: number, updateStarSystemDto: UpdateStarSystemType) {
-    return this.prisma.sistemasEstelares.update({
-      data: updateStarSystemDto,
-      where: {
-        id
+    try {
+      return this.prisma.sistemasEstelares.update({
+        data: updateStarSystemDto,
+        where: {
+          id
+        }
+      })
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error(error);
       }
-    })
+    }
+    
   }
 
   remove(id: number) {
-    return this.prisma.sistemasEstelares.delete({where:{
-      id
-    }})
+    try {
+      return this.prisma.sistemasEstelares.delete({where:{
+        id
+      }})
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error(error);
+      }
+    }
+    
   }
 }

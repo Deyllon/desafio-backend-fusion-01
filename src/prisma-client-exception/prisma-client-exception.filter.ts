@@ -16,7 +16,15 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
         const status = HttpStatus.CONFLICT;
         response.status(status).send({
           statusCode: status,
-          message: `ja existe esse ${field} na base de dados porfavor utilize um novo` ,
+          message: `Ja existe esse ${field} na base de dados porfavor utilize um novo` ,
+        });
+        break;
+      }
+      case 'P2025': {
+        const status = HttpStatus.NOT_FOUND;
+        response.status(status).send({
+          statusCode: status,
+          message: `Id não encontrado` ,
         });
         break;
       }

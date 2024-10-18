@@ -87,6 +87,7 @@ model Personagens {
   afiliacao  Afiliacao
   planeta Planetas  @relation(fields: [planetaId], references: [id])
   planetaId Int
+  nome String  @unique
 }
 
 model NavesEspaciais {
