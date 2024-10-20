@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CharactersService } from './characters.service';
 import { CreateCharacterType } from './dto/create-character.dto';
 import { UpdateCharacterType } from './dto/update-character.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 
 @ApiTags('characters')
@@ -35,21 +35,25 @@ export class CharactersController {
       required: [ 'afiliacao', 'raca', 'nome', 'planetaId'],
     },
   })
+  @ApiBearerAuth()
   create(@Body() createCharacterDto: CreateCharacterType) {
     return this.charactersService.create(createCharacterDto);
   }
 
   @Get()
+  @ApiBearerAuth()
   findAll() {
     return this.charactersService.findAll();
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.charactersService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   @ApiBody({
     schema: {
       type: 'object',
@@ -66,6 +70,7 @@ export class CharactersController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.charactersService.remove(+id);
   }

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PlanetsService } from './planets.service';
 import { CreatePlanetType } from './dto/create-planet.dto';
 import { UpdatePlanetType } from './dto/update-planet.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 
 @ApiTags('planets')
@@ -11,6 +11,7 @@ export class PlanetsController {
   constructor(private readonly planetsService: PlanetsService) {}
 
   @Post()
+  @ApiBearerAuth()
   @ApiBody({
     schema: {
       type: 'object',
@@ -44,16 +45,19 @@ export class PlanetsController {
   }
 
   @Get()
+  @ApiBearerAuth()
   findAll() {
     return this.planetsService.findAll();
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.planetsService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   @ApiBody({
     schema: {
       type: 'object',
@@ -74,6 +78,7 @@ export class PlanetsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.planetsService.remove(+id);
   }

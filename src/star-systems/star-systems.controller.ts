@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { StarSystemsService } from './star-systems.service';
 import { CreateStarSystemType } from './dto/create-star-system.dto'; 
 import { UpdateStarSystemType } from './dto/update-star-system.dto'; 
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 
 @ApiTags('star-systems')
@@ -27,16 +27,19 @@ export class StarSystemsController {
       required: [ 'nome', 'descricao' ],
     },
   })
+  @ApiBearerAuth()
   create(@Body() createStarSystemDto: CreateStarSystemType) {
     return this.starSystemsService.create(createStarSystemDto);
   }
 
   @Get()
+  @ApiBearerAuth()
   findAll() {
     return this.starSystemsService.findAll();
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.starSystemsService.findOne(+id);
   }
@@ -53,10 +56,12 @@ export class StarSystemsController {
       }
     },
   })
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateStarSystemDto: UpdateStarSystemType) {
     return this.starSystemsService.update(+id, updateStarSystemDto);
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.starSystemsService.remove(+id);

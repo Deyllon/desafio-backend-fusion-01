@@ -4,7 +4,7 @@ import { CreateUserType } from './dto/create-user.dto';
 import { UpdateUserType } from './dto/update-user.dto';
 import { LoginType } from './dto/login.dto';
 import { Public } from 'src/decorator/public.decorator';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 
 
@@ -42,11 +42,13 @@ export class UsersController {
   }
 
   @Get()
+  @ApiBearerAuth()
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
@@ -64,11 +66,13 @@ export class UsersController {
       }
     },
   })
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserType) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

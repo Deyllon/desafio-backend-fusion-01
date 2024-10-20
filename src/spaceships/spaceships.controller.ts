@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { SpaceshipsService } from './spaceships.service';
 import { CreateSpaceshipType } from './dto/create-spaceship.dto';
 import { UpdateSpaceshipType } from './dto/update-spaceship.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 
 @ApiTags('spaceships')
@@ -11,6 +11,7 @@ export class SpaceshipsController {
   constructor(private readonly spaceshipsService: SpaceshipsService) {}
 
   @Post()
+  @ApiBearerAuth()
   @ApiBody({
     schema: {
       type: 'object',
@@ -40,11 +41,13 @@ export class SpaceshipsController {
   }
 
   @Get()
+  @ApiBearerAuth()
   findAll() {
     return this.spaceshipsService.findAll();
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.spaceshipsService.findOne(+id);
   }
@@ -61,11 +64,13 @@ export class SpaceshipsController {
       }
     },
   })
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateSpaceshipDto: UpdateSpaceshipType) {
     return this.spaceshipsService.update(+id, updateSpaceshipDto);
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.spaceshipsService.remove(+id);
   }
