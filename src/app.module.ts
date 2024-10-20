@@ -6,11 +6,11 @@ import { StarSystemsModule } from './star-systems/star-systems.module';
 import { UsersModule } from './users/users.module';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { CharactersModule } from './characters/characters.module';
-import { SpacheshipsModule } from './spacheships/spacheships.module';
+import { SpaceshipsModule } from './spaceships/spaceships.module';
 import { AuthGuard } from './guard/auth.guard';
 
 @Module({
-  imports: [PlanetsModule, StarSystemsModule, UsersModule, CharactersModule, SpacheshipsModule],
+  imports: [PlanetsModule, StarSystemsModule, UsersModule, CharactersModule, SpaceshipsModule],
   controllers: [],
   providers: [
     {

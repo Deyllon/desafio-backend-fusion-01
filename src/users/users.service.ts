@@ -1,8 +1,8 @@
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserType } from './dto/create-user.dto';
 import { UpdateUserType } from './dto/update-user.dto';
-import { BcryptService } from 'src/bcrypt/bcrypt.service';
-import { PrismaService } from 'src/prisma.service';
+import { BcryptService } from '../bcrypt/bcrypt.service';
+import { PrismaService } from '../prisma.service';
 import { LoginType } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 
@@ -29,7 +29,7 @@ export class UsersService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
+      if(error instanceof InternalServerErrorException) {
         throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
@@ -47,7 +47,7 @@ export class UsersService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
+      if(error instanceof InternalServerErrorException) {
         throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
@@ -76,7 +76,7 @@ export class UsersService {
       if(error instanceof NotFoundException) {
         throw error
       }
-      throw new Error(error)
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -103,7 +103,7 @@ export class UsersService {
         data: updateUserDto
       })
     } catch (error) {
-      if(error instanceof Error) {
+      if(error instanceof InternalServerErrorException) {
         throw new Error(error.message)
       }
       throw new Error(error)
@@ -118,8 +118,8 @@ export class UsersService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }

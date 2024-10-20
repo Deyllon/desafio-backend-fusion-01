@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateStarSystemType } from './dto/create-star-system.dto'; 
 import { UpdateStarSystemType } from './dto/update-star-system.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 
 
 @Injectable()
@@ -19,8 +19,8 @@ export class StarSystemsService {
         }
       })
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
+      if (error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message);
       } else {
         throw new Error(error);
       }
@@ -32,8 +32,8 @@ export class StarSystemsService {
     try {
       return this.prisma.sistemasEstelares.findMany()
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
+      if (error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message);
       } else {
         throw new Error(error);
       }
@@ -56,7 +56,7 @@ export class StarSystemsService {
       if (error instanceof NotFoundException) {
         throw error
       } else {
-        throw new Error(error);
+        throw new InternalServerErrorException(error);
       }
     }
     
@@ -71,8 +71,8 @@ export class StarSystemsService {
         }
       })
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
+      if (error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message);
       } else {
         throw new Error(error);
       }
@@ -86,8 +86,8 @@ export class StarSystemsService {
         id
       }})
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
+      if (error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message);
       } else {
         throw new Error(error);
       }

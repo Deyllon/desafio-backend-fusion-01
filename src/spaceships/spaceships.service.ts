@@ -1,15 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from 'src/prisma.service';
-import { CreateSpacheshipType } from './dto/create-spacheship.dto';
-import { UpdateSpacheshipType } from './dto/update-spacheship.dto';
+import { PrismaService } from '../prisma.service';
+import { CreateSpaceshipType } from './dto/create-spaceship.dto';
+import { UpdateSpaceshipType } from './dto/update-spaceship.dto';
 
 @Injectable()
-export class SpacheshipsService {
+export class SpaceshipsService {
   constructor(
     private readonly prisma: PrismaService
   ){}
-  create(createSpacheshipDto: CreateSpacheshipType) {
+  create(createSpacheshipDto: CreateSpaceshipType) {
     try {
       return this.prisma.navesEspaciais.create({
         data:{
@@ -20,8 +20,8 @@ export class SpacheshipsService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -31,8 +31,8 @@ export class SpacheshipsService {
     try {
       return this.prisma.navesEspaciais.findMany()
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -55,11 +55,11 @@ export class SpacheshipsService {
       if(error instanceof NotFoundException) {
         throw error
       }
-      throw new Error(error)
+      throw new InternalServerErrorException(error)
     }
   }
 
-  update(id: number, updateSpacheshipDto: UpdateSpacheshipType) {
+  update(id: number, updateSpacheshipDto: UpdateSpaceshipType) {
     try {
       return this.prisma.navesEspaciais.update({
         where:{
@@ -68,8 +68,8 @@ export class SpacheshipsService {
         data: updateSpacheshipDto
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -83,8 +83,8 @@ export class SpacheshipsService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }

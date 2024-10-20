@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateCharacterType } from './dto/create-character.dto';
 import { UpdateCharacterType } from './dto/update-character.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 
 
 @Injectable()
@@ -22,8 +22,8 @@ export class CharactersService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -47,8 +47,8 @@ export class CharactersService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -84,7 +84,7 @@ export class CharactersService {
       if(error instanceof NotFoundException) {
         throw error
       }
-      throw new Error(error)
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -97,8 +97,8 @@ export class CharactersService {
         data: updateCharacterDto
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -106,14 +106,14 @@ export class CharactersService {
 
   remove(id: number) {
     try {
-      return this.prisma.usuarios.delete({
+      return this.prisma.personagens.delete({
         where:{
           id
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }

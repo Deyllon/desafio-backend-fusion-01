@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { SpacheshipsService } from './spacheships.service';
-import { CreateSpacheshipType } from './dto/create-spacheship.dto';
-import { UpdateSpacheshipType } from './dto/update-spacheship.dto';
+import { SpaceshipsService } from './spaceships.service';
+import { CreateSpaceshipType } from './dto/create-spaceship.dto';
+import { UpdateSpaceshipType } from './dto/update-spaceship.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 
 @ApiTags('spaceships')
-@Controller('spacheships')
-export class SpacheshipsController {
-  constructor(private readonly spacheshipsService: SpacheshipsService) {}
+@Controller('spaceships')
+export class SpaceshipsController {
+  constructor(private readonly spaceshipsService: SpaceshipsService) {}
 
   @Post()
   @ApiBody({
@@ -35,18 +35,18 @@ export class SpacheshipsController {
       required: [ 'modelo', 'fabricante', 'nome', 'capacidade'],
     },
   })
-  create(@Body() createSpacheshipDto: CreateSpacheshipType) {
-    return this.spacheshipsService.create(createSpacheshipDto);
+  create(@Body() createSpaceshipDto: CreateSpaceshipType) {
+    return this.spaceshipsService.create(createSpaceshipDto);
   }
 
   @Get()
   findAll() {
-    return this.spacheshipsService.findAll();
+    return this.spaceshipsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.spacheshipsService.findOne(+id);
+    return this.spaceshipsService.findOne(+id);
   }
 
   @Patch(':id')
@@ -61,12 +61,12 @@ export class SpacheshipsController {
       }
     },
   })
-  update(@Param('id') id: string, @Body() updateSpacheshipDto: UpdateSpacheshipType) {
-    return this.spacheshipsService.update(+id, updateSpacheshipDto);
+  update(@Param('id') id: string, @Body() updateSpaceshipDto: UpdateSpaceshipType) {
+    return this.spaceshipsService.update(+id, updateSpaceshipDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.spacheshipsService.remove(+id);
+    return this.spaceshipsService.remove(+id);
   }
 }

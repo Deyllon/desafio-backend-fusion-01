@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreatePlanetType } from './dto/create-planet.dto';
 
-import { PrismaService } from 'src/prisma.service'; 
+import { PrismaService } from '../prisma.service'; 
 import { UpdatePlanetType } from './dto/update-planet.dto';
 
 @Injectable()
@@ -20,8 +20,8 @@ export class PlanetsService {
         }
       }})
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -47,8 +47,8 @@ export class PlanetsService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -86,7 +86,7 @@ export class PlanetsService {
       if(error instanceof NotFoundException) {
         throw error
       }
-      throw new Error(error)
+      throw new InternalServerErrorException(error)
     }
     
   }
@@ -100,8 +100,8 @@ export class PlanetsService {
         }
       })
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
@@ -112,8 +112,8 @@ export class PlanetsService {
     try {
       return this.prisma.planetas.delete({where: {id}})
     } catch (error) {
-      if(error instanceof Error) {
-        throw new Error(error.message)
+      if(error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(error.message)
       }
       throw new Error(error)
     }
